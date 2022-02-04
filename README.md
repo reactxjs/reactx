@@ -2,15 +2,18 @@
 Simplified ReactJS Store manager with persistent storage
 This is loosely based on VueX (VueJS Store manager)
 
-# How to
+# How to setup local repo testing
 1. Clone the repo
 2. run npm install
 3. run npm start
 4. add ```"reactx": "file:path/to/reactx"``` to your package.json
 
+# Install
+```npm install --save @reactxjs/reactx```
+
 # Create Store
 ```
-import ReactX from 'reactx';
+import ReactX from '@reactxjs/reactx';
 import test from './modules/test';
 
 export default new ReactX({ 
