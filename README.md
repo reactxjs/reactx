@@ -6,7 +6,7 @@ This is loosely based on VueX (VueJS Store manager)
 1. Clone the repo
 2. run npm install
 3. run npm start
-4. add ```"reactx": "file:../reactx"``` to your package.json
+4. add ```"reactx": "file:path/to/reactx"``` to your package.json
 
 # Create Store
 ```
