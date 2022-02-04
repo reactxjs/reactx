@@ -1,10 +1,13 @@
 {
-  "name": "reactx",
+  "name": "@reactxjs/reactx",
   "version": "1.0.0",
   "description": "Made with create-react-library",
   "author": "",
   "license": "MIT",
-  "repository": "/reactx",
+  "repository": {
+    "type": "git",
+    "url": "/reactx"
+  },
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
