@@ -2,7 +2,19 @@
   "name": "@reactxjs/reactx",
   "version": "0.1.0-alpha.0",
   "description": "Made with create-react-library",
-  "author": "",
+  "author": "ReactXJS",
+  "contributors": [
+    {
+      "name" : "Joakim Stenberg",
+      "email" : "joakim@stenberg.uk",
+      "url" : "https://github.com/iamkaarp"
+    }
+  ],
+  "homepage": "https://github.com/reactxjs/reactx#readme",
+  "bugs": {
+    "url": "https://github.com/reactxjs/reactx/issues"
+  },
+  "keywords": ["react", "reactjs", "store manager", "store"],
   "license": "MIT",
   "repository": {
     "type": "git",
