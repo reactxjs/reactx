@@ -1,0 +1,2 @@
+# reactx
+ReactJS Store manager
