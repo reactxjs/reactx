@@ -1,14 +1,18 @@
 export default class ReactX {
   state = {}
   store = null
+  options = {}
+  storage = null;
   constructor(options = {}) {
+    this.options = options;
+    this.storage = options.storage;
     options.modules.forEach((module) => {
       this.state[module.name] = module
       if (this.state[module.name].persistent) {
-        const localStorage = window.localStorage.getItem('reactx')
-        if (localStorage) {
-          console.log(localStorage)
-          // this.state[module.name].state = localStorage[module.name]
+        const storage = this.storage.getItem('reactx')
+        if (storage) {
+          console.log(storage)
+          // this.state[module.name].state = storage[module.name]
         }
       }
     })
@@ -22,8 +26,8 @@ export default class ReactX {
       payload
     )
     if (this.state[store].persistent) {
-      // const localStorage = window.localStorage.getItem('reactx')
-      window.localStorage.setItem(
+      // const storage = this.storage.getItem('reactx')
+      this.storage.setItem(
         'reactx',
         JSON.stringify({
           [store]: this.state[store].state
