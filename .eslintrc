@@ -28,6 +28,33 @@
     "react/jsx-handler-names": 0,
     "react/jsx-fragments": 0,
     "react/no-unused-prop-types": 0,
-    "import/export": 0
+    "import/export": 0,
+    "react/jsx-max-props-per-line": [2, {"maximum": 1, "when": "always" }],
+    "react/jsx-first-prop-new-line": [2, "multiline"],
+    "react/jsx-one-expression-per-line":["error"],
+    "array-bracket-spacing": ["error", "never"],
+    "eqeqeq": "warn",
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "no-trailing-spaces": [
+      "error"
+    ],
+    "curly": [
+      "error"
+    ],
+    "no-param-reassign": [
+      "error"
+    ],
+    "no-useless-concat": [
+      "error"
+    ],
+    "yoda": [
+      "error"
+    ],
+    "max-depth": [
+      "warn"
+    ]
   }
 }
