@@ -1,4 +1,4 @@
-# ReaxtX
+# ReactX
 Simplified ReactJS Store manager with persistent storage
 This is loosely based on VueX (VueJS Store manager)
 
