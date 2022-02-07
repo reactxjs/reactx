@@ -1,50 +1,64 @@
 export default class ReactX {
-  state = {}
-  store = null
+  modules = {}
+  module = null
   options = {}
-  storage = null;
+  storage = null
   constructor(options = {}) {
-    this.options = options;
-    this.storage = options.storage;
+    this.options = options
+    this.storage = options.storage ? options.storage : null
+
     options.modules.forEach((module) => {
-      this.state[module.name] = module
-      if (this.state[module.name].persistent) {
-        const storage = this.storage.getItem('reactx')
+      if (this.modules.hasOwnProperty(module.name)) {
+        console.module(`[reactx] Module of name ${module.name} already exists`)
+        return
+      }
+      this.modules[module.name] = module
+      if (this.modules[module.name].persistent && this.storage) {
+        if (!this.storage) {
+          console.error('[reactx] No storage provided')
+          return
+        }
+
+        const storage = JSON.parse(this.storage.getItem('reactx'))
         if (storage) {
-          console.log(storage)
-          // this.state[module.name].state = storage[module.name]
+          this.modules[module.name].state[module.name] = storage[module.name]
         }
       }
     })
   }
 
   dispatch(type, payload) {
-    const [store, action] = type.split('/')
-    this.store = store
-    this.state[store].actions[action](
+    const [module, action] = type.split('/')
+    this.module = module
+    this.modules[module].actions[action](
       { commit: (mutator, data) => this.commit(mutator, data) },
       payload
     )
-    if (this.state[store].persistent) {
-      // const storage = this.storage.getItem('reactx')
-      this.storage.setItem(
-        'reactx',
-        JSON.stringify({
-          [store]: this.state[store].state
-        })
-      )
+    if (this.modules[module].persistent && this.storage) {
+      if (!this.storage) {
+        console.error('[reactx] No storage provided')
+      }
+      const storage = this.storage.getItem('reactx')
+      const storageState = JSON.parse(storage) || {}
+      this.options.modules.forEach((module) => {
+        const key = Object.keys(module.state)
+        storageState[module.name] =
+          this.modules[module.name].state[key.toString()]
+      })
+
+      this.storage.setItem('reactx', JSON.stringify(storageState))
     }
   }
 
   commit(mutator, data) {
-    this.state[this.store].mutations[mutator](
-      this.state[this.store].state,
+    this.modules[this.module].mutations[mutator](
+      this.modules[this.module].state,
       data
     )
   }
 
   getters(type) {
-    const [store, getter] = type.split('/')
-    return this.state[store].getters[getter](this.state[store].state)
+    const [module, getter] = type.split('/')
+    return this.modules[module].getters[getter](this.modules[module].state)
   }
 }
