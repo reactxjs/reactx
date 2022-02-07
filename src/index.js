@@ -42,8 +42,10 @@ export default class ReactX {
       const storageState = JSON.parse(storage) || {}
       this.options.modules.forEach((module) => {
         const key = Object.keys(module.state)
-        storageState[module.name] =
-          this.modules[module.name].state[key.toString()]
+        if (this.modules[module.name].persistent) {
+          storageState[module.name] =
+            this.modules[module.name].state[key.toString()]
+        }
       })
 
       this.storage.setItem('reactx', JSON.stringify(storageState))
