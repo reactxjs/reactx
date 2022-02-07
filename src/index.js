@@ -8,6 +8,11 @@ export default class ReactX {
     this.options = options
     this.storage = options.storage ? options.storage : null
 
+    if (options.modules.length === 0) {
+      console.error('[reactx] No modules provided')
+      return
+    }
+
     options.modules.forEach((module) => {
       if (this.modules.hasOwnProperty(module.name)) {
         console.module(`[reactx] Module of name ${module.name} already exists`)
