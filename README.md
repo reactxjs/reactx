@@ -1,30 +1,65 @@
-# reactx
+# ReactX
+Simplified ReactJS Store manager with persistent storage
+This is loosely based on VueX (VueJS Store manager)
 
-> Made with create-react-library
+# How to setup local repo testing
+1. Clone the repo
+2. run npm install
+3. run npm start
+4. add ```"@reactxjs/reactx": "file:path/to/reactx"``` to your package.json
 
-[![NPM](https://img.shields.io/npm/v/reactx.svg)](https://www.npmjs.com/package/reactx) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+# Install
+```npm install --save @reactxjs/reactx```
 
-## Install
+# Create Store
+```
+import ReactX from '@reactxjs/reactx';
+import test from './modules/test';
 
-```bash
-npm install --save reactx
+export default new ReactX({ 
+  modules: [
+    test,
+  ]
+ });
+``` 
+# Create Store module
+```
+export default {
+  name: 'test',
+  persistent: true,
+  state: {
+      test: [],
+  },
+  getters: {
+      get: state => state.test
+  },
+  mutations: {
+    setup(state, data) {
+        state.test = data;
+    }
+  },
+  actions: {
+      setup({ commit }, data) {
+          commit('setup', data);
+      },
+  },
+};
+```
+# Bind your store to React instance
+```
+import React from 'react';
+
+import store from './store';
+
+React.$store = store;
 ```
 
-## Usage
-
-```tsx
-import React, { Component } from 'react'
-
-import MyComponent from 'reactx'
-import 'reactx/dist/index.css'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+# Dispatch to store
+```
+React.$store.dispatch('test/setup', [1, 2, 3]);
 ```
 
-## License
-
-MIT © [iamkaarp](https://github.com/iamkaarp)
+# Get from store
+```
+React.$store.getters('test/get')
+```
