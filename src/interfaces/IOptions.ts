@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-vars */
+import { IModule } from '.'
+
 export default interface IOptions {
-  modules: Array<Object>
+  modules: Array<IModule>
   storage: Object
 }

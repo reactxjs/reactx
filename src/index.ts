@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import _ from 'lodash'
-import { IOptions } from './interfaces'
+import { IModule, IOptions } from './interfaces'
 
 export default class ReactX {
   options: IOptions
@@ -22,7 +22,7 @@ export default class ReactX {
     this.options = _.cloneDeep(options)
     this.storage = this.options.storage
 
-    this.options.modules.forEach((module: any) => {
+    this.options.modules.forEach((module: IModule) => {
       if (this.modules) {
         if (module.name in this.modules) {
           console.error(`[reactx] Module of name ${module.name} already exists`)
@@ -44,15 +44,12 @@ export default class ReactX {
     })
   }
 
-  dispatch = (type: string, payload: Array<any> | object | string | number) => {
+  dispatch = (type: string, payload: any) => {
     const [module, action] = type.split('/')
     this.module = module
     this.modules[module].actions[action](
       {
-        commit: (
-          mutator: string,
-          data: Array<any> | object | string | number
-        ) => {
+        commit: (mutator: string, data: any) => {
           this.commit(mutator, data)
         }
       },
@@ -64,7 +61,7 @@ export default class ReactX {
       }
       const storage = this.storage.getItem('reactx')
       const storageState = JSON.parse(storage) || {}
-      this.options.modules.forEach((module: any) => {
+      this.options.modules.forEach((module: IModule) => {
         const key = Object.keys(module.state)
         if (this.modules[module.name].persistent) {
           storageState[module.name] =
@@ -76,7 +73,7 @@ export default class ReactX {
     }
   }
 
-  commit = (mutator: string, data: Array<any> | object | string | number) => {
+  commit = (mutator: string, data: any) => {
     this.modules[this.module].mutations[mutator](
       this.modules[this.module].state,
       data
