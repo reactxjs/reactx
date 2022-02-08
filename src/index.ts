@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import _ from 'lodash'
-import { IOptions, IModule } from './interfaces'
+import { IOptions } from './interfaces'
 
 export default class ReactX {
   options: IOptions
   modules: object = {}
-  module: string
+  module: string = ''
   storage: any
 
   constructor(options: IOptions) {
@@ -22,7 +22,7 @@ export default class ReactX {
     this.options = _.cloneDeep(options)
     this.storage = this.options.storage
 
-    this.options.modules.forEach((module: IModule) => {
+    this.options.modules.forEach((module: any) => {
       if (this.modules) {
         if (module.name in this.modules) {
           console.error(`[reactx] Module of name ${module.name} already exists`)
@@ -64,7 +64,7 @@ export default class ReactX {
       }
       const storage = this.storage.getItem('reactx')
       const storageState = JSON.parse(storage) || {}
-      this.options.modules.forEach((module: IModule) => {
+      this.options.modules.forEach((module: any) => {
         const key = Object.keys(module.state)
         if (this.modules[module.name].persistent) {
           storageState[module.name] =

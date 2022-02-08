@@ -52,12 +52,4 @@ describe('ReactX', () => {
     const getter = reactx.getters('test/get')
     expect(getter).toEqual('abcd')
   })
-
-  it('can use local storage', () => {
-    options.modules[0].persistent = true
-    const reactx = new ReactX(options)
-    reactx.dispatch('test/test', 'abcd')
-    const getter = reactx.getters('test/get')
-    expect(getter).toEqual('abcd')
-  })
 })
