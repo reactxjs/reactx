@@ -1,22 +1,28 @@
 import ReactX from '.'
 
+interface IState {
+  test: string
+}
+
 const options = {
+  storage: {} as any,
   modules: [
     {
       name: 'test',
+      persistent: false,
       state: {
         test: 'test'
       },
       getters: {
-        get: (state) => state.test
+        get: (state: IState) => state.test
       },
       actions: {
-        test: ({ commit }, data) => {
-          commit('test', data)
+        test: (context: any, data: string) => {
+          context.commit('test', data)
         }
       },
       mutations: {
-        test: (state, data) => {
+        test: (state: IState, data: string) => {
           state.test = data
         }
       }
@@ -41,14 +47,6 @@ describe('ReactX', () => {
   })
 
   it('can dispatch', () => {
-    const reactx = new ReactX(options)
-    reactx.dispatch('test/test', 'abcd')
-    const getter = reactx.getters('test/get')
-    expect(getter).toEqual('abcd')
-  })
-
-  it('can use local storage', () => {
-    options.modules[0].persistent = true
     const reactx = new ReactX(options)
     reactx.dispatch('test/test', 'abcd')
     const getter = reactx.getters('test/get')

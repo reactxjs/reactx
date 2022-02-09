@@ -1,22 +1,33 @@
-/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-unused-vars */
+import _ from 'lodash'
+import { IModule, IOptions } from './interfaces'
+
 export default class ReactX {
-  modules = {}
-  module = null
-  options = {}
-  storage = null
-  constructor(options = {}) {
-    this.options = options
-    this.storage = options.storage ? options.storage : null
+  options: IOptions
+  modules: object = {}
+  module: string = ''
+  storage: any
+
+  constructor(options: IOptions) {
+    if (!options) {
+      console.error('[reactx] No options provided')
+      return
+    }
 
     if (options.modules.length === 0) {
       console.error('[reactx] No modules provided')
       return
     }
 
-    options.modules.forEach((module) => {
-      if (this.modules.hasOwnProperty(module.name)) {
-        console.module(`[reactx] Module of name ${module.name} already exists`)
-        return
+    this.options = _.cloneDeep(options)
+    this.storage = this.options.storage
+
+    this.options.modules.forEach((module: IModule) => {
+      if (this.modules) {
+        if (module.name in this.modules) {
+          console.error(`[reactx] Module of name ${module.name} already exists`)
+          return
+        }
       }
       this.modules[module.name] = module
       if (this.modules[module.name].persistent && this.storage) {
@@ -33,11 +44,15 @@ export default class ReactX {
     })
   }
 
-  dispatch(type, payload) {
+  dispatch = (type: string, payload: any) => {
     const [module, action] = type.split('/')
     this.module = module
     this.modules[module].actions[action](
-      { commit: (mutator, data) => this.commit(mutator, data) },
+      {
+        commit: (mutator: string, data: any) => {
+          this.commit(mutator, data)
+        }
+      },
       payload
     )
     if (this.modules[module].persistent && this.storage) {
@@ -46,7 +61,7 @@ export default class ReactX {
       }
       const storage = this.storage.getItem('reactx')
       const storageState = JSON.parse(storage) || {}
-      this.options.modules.forEach((module) => {
+      this.options.modules.forEach((module: IModule) => {
         const key = Object.keys(module.state)
         if (this.modules[module.name].persistent) {
           storageState[module.name] =
@@ -58,14 +73,14 @@ export default class ReactX {
     }
   }
 
-  commit(mutator, data) {
+  commit = (mutator: string, data: any) => {
     this.modules[this.module].mutations[mutator](
       this.modules[this.module].state,
       data
     )
   }
 
-  getters(type) {
+  getters = (type: string) => {
     const [module, getter] = type.split('/')
     return this.modules[module].getters[getter](this.modules[module].state)
   }
